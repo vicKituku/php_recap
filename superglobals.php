@@ -1,4 +1,5 @@
 <?php
+session_start();
 //special array values
 echo $_SERVER['SERVER_NAME'] . "<br/>";
 echo $_SERVER['REQUEST_METHOD'] . "<br/>";
@@ -17,7 +18,7 @@ echo $_SERVER['PHP_SELF'] . "<br/>";
 </head>
 
 <body>
-
+    <h1><?php echo $_SESSION['name'] ?></h1>
 </body>
 
 </html>
