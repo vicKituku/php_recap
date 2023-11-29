@@ -1,42 +1,42 @@
 <?php
 include('config/db_connect.php');
 $title = $email = $ingredients = '';
-$errors = array('email'=>'', 'title'=> '', 'ingredients' =>'');
+$errors = array('email' => '', 'title' => '', 'ingredients' => '');
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
     //check email
-    if(empty($_POST['email'])){
+    if (empty($_POST['email'])) {
         $errors['email'] = "An email is required </br>";
-    }else{
+    } else {
         $email = $_POST['email'];
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Email must be a valid email address';
         }
     }
 
     //check title
-    if(empty($_POST['title'])){
+    if (empty($_POST['title'])) {
         $errors['title'] = "A title is required </br>";
-    }else{
+    } else {
         $title = $_POST['title'];
-        if(!preg_match('/^[a-zA-Z\s]+$/', $title)){
+        if (!preg_match('/^[a-zA-Z\s]+$/', $title)) {
             $errors['title'] = "Title must be letters and spaces only";
         }
     }
 
     //check ingredient
-    if(empty($_POST['ingredients'])){
+    if (empty($_POST['ingredients'])) {
         $errors['ingredients'] = "Atleast one ingredient is required </br>";
-    }else{
+    } else {
         $ingredients = $_POST['ingredients'];
-        
-        if(!preg_match('/^([a-zA-Z]+)(,\s*[a-zA-Z]*)*$/',$ingredients)){
+
+        if (!preg_match('/^([a-zA-Z]+)(,\s*[a-zA-Z]*)*$/', $ingredients)) {
             $errors['ingredients'] = 'Ingredients must be a comma separated list';
         }
     }
-    if(array_filter($errors)){
+    if (array_filter($errors)) {
         // echo 'There are errors in the form';
-    }else{
+    } else {
         // echo 'form is valid';
         $email = mysqli_real_escape_string($conn, $_POST['email']);
         $title = mysqli_real_escape_string($conn, $_POST['title']);
@@ -46,11 +46,11 @@ if(isset($_POST['submit'])){
         $sql = "INSERT INTO pizzas(title,email,ingredients) VALUES('$title','$email','$ingredients')";
 
         //save to db and check
-        if(mysqli_query($conn, $sql)){
+        if (mysqli_query($conn, $sql)) {
             //success
-        }else{
+        } else {
             //error
-            echo 'query error: '. mysqli_error($conn);
+            echo 'query error: ' . mysqli_error($conn);
         }
 
 
@@ -66,7 +66,7 @@ if(isset($_POST['submit'])){
 
 <section class="container grey-text">
     <h4 class="center"> Add a Pizza</h4>
-    <form action="add.php" method="POST" class="white">
+    <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" class="white">
         <label for="">Your Email:</label>
         <input type="text" name="email" value="<?php echo $email; ?>">
         <div class="red-text"><?php echo $errors['email']; ?></div>
@@ -87,4 +87,5 @@ if(isset($_POST['submit'])){
 
 
 <?php include('templates/footer.php') ?>
+
 </html>
